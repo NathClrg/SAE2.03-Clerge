@@ -1,6 +1,6 @@
 let templateFile = await fetch("./component/Movie/template.html");
 let template = await templateFile.text();
-let dataFile = await fetch(data); // data is the file path
+let dataFile = await fetch("./component/Movie_Card/template.html"); // data is the file path
 let dataHtml = await dataFile.text();
 let Movie = {};
 
