@@ -16,13 +16,22 @@
       import { DataMovie } from "./data/dataMovie.js";
       import { NavBar } from "./component/NavBar/script.js";
       import { Movie } from "./component/Movie/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
       let movies = await DataMovie.requestMovies();
       let test = [];
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
-
+      C.handlerMovieDetail = async function (id) {
+        let selectedMovie = await DataMovie.requestMovieDetails(id);
+        if (selectedMovie) {
+          V.renderMovieDetail(selectedMovie);
+        }
+      };
+      C.handlerCloseMovieDetail = function (id) {
+        V.renderMovies(movies, "C.handlerMovieDetail");
+      };
       C.handlerAbout = function () {
         alert(
           "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
@@ -30,20 +39,12 @@
       };
 
       C.start = function () {
-        V.renderNavBar("C.handlerAbout()");
+        V.renderNavBar("C.handlerAbout()", "C.handlerCloseMovieDetail()");
         V.renderMovies(movies);
       };
 
-      // Vue (contient tout ce qui est relatif à l'affichage)
       window.V = {};
 
-      /**
-       * V.renderNavBar
-       *
-       * Cette fonction est responsable de l'affichage de la barre de navigation (NavBar).
-       * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
-       * formaté par le composant NavBar.
-       */
       V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
         header.innerHTML = NavBar.format(hAbout);
@@ -52,9 +53,11 @@
         let content = document.querySelector("#content");
         content.innerHTML = Movie.format(data);
       };
-
-      C.start(); // Démarre l'application
+      V.renderMovieDetail = function (data) {
+        let content = document.querySelector("#content");
+        content.innerHTML = MovieDetail.format(data);
+      };
+      C.start();
     </script>
   </body>
 </html>
-<script type="module"></script>

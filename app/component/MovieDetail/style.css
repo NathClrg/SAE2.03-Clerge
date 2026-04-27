@@ -1,0 +1,59 @@
+.detail {
+  max-width: 56rem;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+
+  background: #414866;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.detail__title {
+  text-align: center;
+  margin-bottom: 1.25rem;
+  font-size: 1.75rem;
+  color: aliceblue;
+}
+
+.detail__top {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.detail__img {
+  width: 15.625rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.detail__infos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.detail__info {
+  margin-bottom: 0.9375rem;
+}
+
+.detail__info h2 {
+  margin: 0 0 0.3125rem 0;
+  font-size: 1rem;
+  color: aliceblue;
+}
+
+.detail__info p {
+  margin: 0;
+  color: #c5c5c5;
+}
+
+.detail__trailer {
+  width: 100%;
+  height: 25rem;
+  margin-top: 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+}

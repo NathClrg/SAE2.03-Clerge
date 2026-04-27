@@ -1,0 +1,46 @@
+<div class="detail">
+  <a href="index.html">close</a>
+  <h1 class="detail__title">{{title}}</h1>
+  <div class="detail__top">
+    <img class="detail__img" src="{{cover}}" alt="{{title}}" />
+    <ul class="detail__infos">
+      <li class="detail__info">
+        <h2>Description</h2>
+        <p>{{description}}</p>
+      </li>
+      <li class="detail__info">
+        <h2>Réalisateur</h2>
+        <p>{{realisateur}}</p>
+      </li>
+      <li class="detail__info">
+        <h2>Année de sortie</h2>
+        <p>{{year}}</p>
+      </li>
+      <li class="detail__info">
+        <h2>Catégorie</h2>
+        <p>{{categorie}}</p>
+      </li>
+      <li class="detail__info">
+        <h2>Âge minimum</h2>
+        <p>{{age}}</p>
+      </li>
+    </ul>
+  </div>
+  <iframe
+    class="detail__trailer"
+    src="{{trailer}}"
+    title="YouTube video player"
+    frameborder="0"
+    allow="
+      accelerometer;
+      autoplay;
+      clipboard-write;
+      encrypted-media;
+      gyroscope;
+      picture-in-picture;
+      web-share;
+    "
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
+</div>

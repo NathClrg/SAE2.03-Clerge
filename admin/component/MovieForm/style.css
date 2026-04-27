@@ -13,17 +13,17 @@
 }
 
 .formulaire__movie label {
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin-top: 0.7rem;
+  margin-bottom: 0.3rem;
   font-weight: bold;
 }
 
 .formulaire__champ,
 .formulaire__movie select {
-  padding: 8px;
+  padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 0.25rem;
+  font-size: 1rem;
 }
 
 .formulaire__champ:focus,
@@ -46,7 +46,7 @@
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   cursor: pointer;
 }
 

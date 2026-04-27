@@ -18,7 +18,8 @@ Movie.format = function (data, tab) {
       let card = templateMovie;
       card = card
         .replaceAll("{{name}}", movie.name)
-        .replaceAll("{{image}}", "../server/images/" + movie.image);
+        .replaceAll("{{image}}", "../server/images/" + movie.image)
+        .replaceAll("{{id}}", movie.id);
       htmlMovie += card;
     }
     html = html.replace("{{movie}}", htmlMovie);

@@ -1,39 +1,48 @@
 <div class="formulaire">
-  <form class="formulaire__movie">
+  <form
+    methode="POST"
+    action="/~clerge1/SAE2.03-Clerge/server/script.php"
+    class="formulaire__movie"
+  >
     <label for="formulaire__champ">Titre Film</label>
     <input
       class="formulaire__champ"
       type="text"
-      name="Film"
+      name="titre"
       placeholder="entrez le titre du film*"
+      required
     />
     <label for="formulaire__champ">Réalisateur</label>
     <input
       class="formulaire__champ"
       type="text"
-      name="Réalisateur"
+      name="realisateur"
       placeholder="Nom du Réalisateur*"
+      required
     />
-    <label for="formulaire__champ">Année</label>
+    <label for="formulaire__champ">Année de Parution</label>
     <input
       class="formulaire__champ"
-      type="text"
-      name="Année"
-      placeholder="année temporaire"
+      type="int"
+      name="annee"
+      placeholder="année de sortie"
+      required
     />
     <label for="formulaire__champ">Durée en Minutes</label>
     <input
       class="formulaire__champ"
       type="number"
-      name="Durée"
+      name="duree"
       placeholder="indiquez la durée du film*"
+      required
     />
     <label for="formulaire__champ">Synopsis</label>
     <input
       class="formulaire__champ"
       type="text"
-      name="Description"
+      name="description"
       placeholder="entrez le synopsis du film*"
+      required
     />
     <label for="categorie">Genre</label>
     <select name="categorie" required>
@@ -53,18 +62,19 @@
     <input
       class="formulaire__champ"
       type="text"
-      name="Image"
+      name="cover"
       placeholder="entrez le chemin d'accés de l'affiche*"
+      required
     />
     <label for="formulaire__champ">Trailer</label>
     <input
       class="formulaire__champ"
       type="text"
-      name="Trailer"
+      name="trailer"
       placeholder="entrez l'url du trailer*"
     />
     <label for="restriction">Restriction D'Âge</label>
-    <select name="restriction" required>
+    <select name="age_min" required>
       <option value="1">0</option>
       <option value="2">7</option>
       <option value="3">10</option>
@@ -72,5 +82,7 @@
       <option value="5">16</option>
       <option value="6">18</option>
     </select>
+    <input class="addmovie__btn" type="hidden" value="addmovies" name="todo" />
+    <input type="submit" value="Ajouter" />
   </form>
 </div>

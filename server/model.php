@@ -20,17 +20,42 @@ define("DBPWD", "clerge1");
 
 
 function getAllMovies(){
-    // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    // Requête SQL pour récupérer le menu avec des paramètres
-    $sql = "select id, name, image, trailer from Movie";
-    // Prépare la requête SQL
+    $sql = "select Movie.id,  Movie.name,  Movie.image, Category.name as label from Movie INNER JOIN Category ON Category.id = Movie.id_category ORDER BY Category.name";
     $stmt = $cnx->prepare($sql);
-    // Exécute la requête SQL
     $stmt->execute();
-    // Récupère les résultats de la requête sous forme d'objets
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
-    return $res; // Retourne les résultats
+    return $res;
 }
 
-/* Malo Le Goat */
+function addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age) {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "INSERT INTO Movie (name, director, year, length, description, id_category, image, trailer, min_age) 
+            VALUES (:t, :r, :y, :dur, :des, :cat, :img, :url, :age)";
+    $stmt = $cnx->prepare($sql);
+
+    $stmt->bindParam(':t', $t);
+    $stmt->bindParam(':r', $r);
+    $stmt->bindParam(':y', $y);
+    $stmt->bindParam(':dur', $dur);
+    $stmt->bindParam(':des', $des);
+    $stmt->bindParam(':cat', $cat);
+    $stmt->bindParam(':img', $img);
+    $stmt->bindParam(':url', $url);
+    $stmt->bindParam(':age', $age);
+
+    $stmt->execute();
+
+    $res = $stmt->rowCount();
+    return $res;
+}
+
+function getMovieDetail($id){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "select Category.name as label, Movie.* from Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE Movie.id = :id";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $res = $stmt->fetch(PDO::FETCH_OBJ);
+    return $res;
+}
