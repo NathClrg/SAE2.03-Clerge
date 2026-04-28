@@ -1,43 +1,23 @@
 <?php
 
-/** ARCHITECTURE PHP SERVEUR  : Rôle du fichier controller.php
- * 
- *  Dans ce fichier, on va définir les fonctions de contrôle qui vont traiter les requêtes HTTP.
- *  Les requêtes HTTP sont interprétées selon la valeur du paramètre 'todo' de la requête (voir script.php)
- *  Pour chaque valeur différente, on déclarera une fonction de contrôle différente.
- * 
- *  Les fonctions de contrôle vont éventuellement lire les paramètres additionnels de la requête, 
- *  les vérifier, puis appeler les fonctions du modèle (model.php) pour effectuer les opérations
- *  nécessaires sur la base de données.
- *  
- *  Si la fonction échoue à traiter la requête, elle retourne false (mauvais paramètres, erreur de connexion à la BDD, etc.)
- *  Sinon elle retourne le résultat de l'opération (des données ou un message) à includre dans la réponse HTTP.
- */
-
-/** Inclusion du fichier model.php
- *  Pour pouvoir utiliser les fonctions qui y sont déclarées et qui permettent
- *  de faire des opérations sur les données stockées en base de données.
- */
 require("model.php");
 
+function readMoviesController() {
+    return getAllMovies();
+}
 
-function readMoviesController(){
+function readMoviesByCategoryController() {
     $movies = getAllMovies();
-    return $movies;
-}
-function readMoviesByCategoryController(){
-    $movies = getAllMovies();
-    $category = [];
-    foreach($movies as $movie){
-        $label = $movie->label;
-        if (!isset($category[$label])){
-            $category[$label] = [];
-        }
-        $category[$label][] = $movie;
+    $grouped = [];
+
+    foreach ($movies as $movie) {
+        $grouped[$movie->label][] = $movie;
     }
-    return $category;
+
+    return $grouped;
 }
-function addMoviesController(){
+
+function addMoviesController() {
     $t = $_REQUEST['titre'];
     $r = $_REQUEST['realisateur'];
     $y = $_REQUEST['annee'];
@@ -47,19 +27,16 @@ function addMoviesController(){
     $img = $_REQUEST['cover'];
     $url = $_REQUEST['trailer'];
     $age = $_REQUEST['age_min'];
+
     $ok = addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age);
-    if($ok != 0){
-        return "$t a été ajouté";
-    }
-    else{
-        return false;
-    }
+
+    return ($ok != 0) ? "$t a été ajouté" : false;
 }
 
-function readMovieDetailController(){
-if(isset($_REQUEST['id'])){
-        $id = $_REQUEST['id'];
-        return getMovieDetail($id);
+function readMovieDetailController() {
+    if (!isset($_REQUEST['id'])) {
+        return false;
     }
-    return false;
+
+    return getMovieDetail($_REQUEST['id']);
 }
