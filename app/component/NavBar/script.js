@@ -10,7 +10,10 @@ NavBar.format = function (hAbout, hHome, profiles) {
   let profilesHtml = "";
   if (profiles && profiles.length > 0) {
     profiles.forEach((profile) => {
-      profilesHtml += `<li class="navbar__ProfileUser" onclick="C.handleProfileSelect('${profile.nom}')"><a href="#">${profile.nom}</a></li><img class="navbar__ProfileAvatar" src="${profile.avatar}" alt="Profile Picture" </img>`;
+      profilesHtml += `<li class="navbar__ProfileUser" onclick="C.handleProfileSelect('${profile.nom}')">
+    <a href="#">${profile.nom}</a>
+    <img class="navbar__ProfileAvatar" src="${profile.avatar}" alt="Profile Picture">
+  </li>`;
     });
   } else {
     profilesHtml = "<li>Aucun profil</li>";
