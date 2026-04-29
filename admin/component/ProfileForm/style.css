@@ -1,0 +1,50 @@
+.formulaire__profile {
+  max-width: 30rem;
+  margin: 2.3rem auto;
+  padding: 1.3rem;
+  background-color: #f4f4f4;
+  border-radius: 0.5rem;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.formulaire__label {
+  margin-top: 0.7rem;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+
+.formulaire__field {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
+.formulaire__field:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.formulaire__field::placeholder {
+  color: #999;
+}
+
+.addmovie__btn {
+  display: none;
+}
+
+.formulaire__profile input[type="submit"] {
+  margin-top: 1.3rem;
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.formulaire__profile input[type="submit"]:hover {
+  background-color: #0056b3;
+}

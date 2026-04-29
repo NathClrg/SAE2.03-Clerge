@@ -19,7 +19,7 @@ export function MovieCategory(movies) {
     categories[cat] += movieTemplate
       .replace("{{id}}", movie.id)
       .replace("{{image}}", "../server/images/" + movie.image)
-      .replace("{{name}}", movie.name);
+      .replaceAll("{{name}}", movie.name);
   }
 
   let html = "";

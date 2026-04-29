@@ -8,11 +8,13 @@
   </head>
   <body>
     <section id="log"></section>
-    <section id="addmenu"></section>
+    <section id="movieform"></section>
+    <section id="profileform"></section>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
       import { MovieForm } from "./component/MovieForm/script.js";
+      import { ProfileForm } from "./component/ProfileForm/script.js";
 
       window.C = {};
 
@@ -25,9 +27,25 @@
         }
       };
 
+      C.handlerAddProfile = async function (e) {
+        e.preventDefault();
+        let form = document.querySelector(".formulaire__profile");
+        if (form.reportValidity()) {
+          let fd = new FormData(form);
+          let res = await fetch("../server/script.php", {
+            method: "POST",
+            body: fd,
+          });
+          let data = await res.json();
+          V.renderLog(data); // Reset form after successful submission
+          form.reset();
+        }
+      };
+
       C.start = function () {
         V.renderLog("Démarrage de l'application");
         V.renderMovieForm("C.handlerAddMovie()");
+        V.renderProfileForm("C.handlerAddProfile()");
       };
 
       window.V = {};
@@ -37,8 +55,12 @@
         content.innerHTML = Log.format(txt);
       };
       V.renderMovieForm = function (handler) {
-        let content = document.querySelector("#addmenu");
+        let content = document.querySelector("#movieform");
         content.innerHTML = MovieForm.format(handler);
+      };
+      V.renderProfileForm = function (handler) {
+        let content = document.querySelector("#profileform");
+        content.innerHTML = ProfileForm.format(handler);
       };
 
       C.start();

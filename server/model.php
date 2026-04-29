@@ -50,6 +50,53 @@ function addMovie($t, $r, $y, $dur, $des, $cat, $img, $url, $age) {
     return $res;
 }
 
+function addProfile($nom,$age,$avatar,$newnom = null){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    
+    // Check if profile with this name already exists
+    $checkSql = "SELECT id FROM Profile WHERE nom = :nom";
+    $checkStmt = $cnx->prepare($checkSql);
+    $checkStmt->bindParam(':nom', $nom);
+    $checkStmt->execute();
+    $existingProfile = $checkStmt->fetch(PDO::FETCH_OBJ);
+    
+    $isRename = false;
+    
+    if ($existingProfile) {
+        // Profile exists
+        if ($newnom && $newnom !== $nom) {
+            // Rename the profile
+            $sql = "UPDATE Profile SET nom = :newnom, age = :age, avatar = :avatar WHERE nom = :nom";
+            $isRename = true;
+        } else {
+            $sql = "UPDATE Profile SET age = :age, avatar = :avatar WHERE nom = :nom";
+        }
+    } else {
+        $sql = "INSERT INTO Profile (nom, age, avatar) VALUES (:nom, :age, :avatar)";
+    }
+    
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':age', $age);
+    $stmt->bindParam(':avatar', $avatar);
+    if ($isRename) {
+        $stmt->bindParam(':newnom', $newnom);
+    }
+    $stmt->execute();
+    
+    $res = $stmt->rowCount();
+    return array('status' => $res > 0, 'isUpdate' => (bool)$existingProfile && !$isRename, 'isRename' => $isRename);
+}
+
+function getAllProfiles(){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT * FROM Profile ORDER BY nom";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+    return $res;
+}
+
 function getMovieDetail($id){
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
     $sql = "select Category.name as label, Movie.* from Movie INNER JOIN Category ON Category.id = Movie.id_category WHERE Movie.id = :id";

@@ -14,16 +14,15 @@
 
     <script type="module">
       import { DataMovie } from "./data/dataMovie.js";
+      import { DataProfile } from "./data/dataProfile.js";
       import { NavBar } from "./component/NavBar/script.js";
       import { Movie } from "./component/Movie/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
       let movies = await DataMovie.requestMovies();
+      let profiles = await DataProfile.requestProfiles();
       let test = [];
 
-      // Controleur
-      // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
-      // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
       C.handlerMovieDetail = async function (id) {
         let selectedMovie = await DataMovie.requestMovieDetails(id);
@@ -41,17 +40,24 @@
       };
 
       C.start = function () {
-        V.renderNavBar("C.handlerAbout()", "C.handlerCloseMovieDetail()");
+        V.renderNavBar(
+          "C.handlerAbout()",
+          "C.handlerCloseMovieDetail()",
+          profiles,
+        );
         V.renderMovieCategory(movies);
       };
       C.handleHomeClick = function () {
         V.renderMovieCategory(movies);
       };
+      C.handleProfileSelect = function (profileName) {
+        console.log("Profil sélectionné: " + profileName);
+      };
       window.V = {};
 
-      V.renderNavBar = function (hAbout) {
+      V.renderNavBar = function (hAbout, hHome, profiles) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout);
+        header.innerHTML = NavBar.format(hAbout, hHome, profiles);
       };
       V.renderMovies = function (data) {
         let content = document.querySelector("#content");
