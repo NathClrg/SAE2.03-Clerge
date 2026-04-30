@@ -3,10 +3,31 @@
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
     <li class="navbar__item" onclick="C.handleHomeClick()">Home</li>
   </ul>
-  <details class="navbar__Profile">
-    <summary class="navbar__ProfileName">Profile</summary>
-    <ul class="navbar__ProfileList">
-      {{profiles}}
-    </ul>
-  </details>
+  <ul class="navbar__auth">
+    <li class="navbar__item" onclick="{{handlerLogOut}}">Déconnexion</li>
+    <li class="navbar__item navbar__profile-container">
+      <img
+        id="current-avatar"
+        src=""
+        alt=""
+        style="
+          display: none;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          vertical-align: middle;
+          margin-right: 8px;
+        "
+      />
+
+      <select
+        name="id"
+        class="profiles"
+        onchange="{{handlerSelect}}(this.value)"
+      >
+        <option value="">--SELECTIONNER UN PROFIL--</option>
+        {{profiles}}
+      </select>
+    </li>
+  </ul>
 </nav>
