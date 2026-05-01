@@ -43,21 +43,32 @@
         V.renderNavBar(
           "C.handlerAbout()",
           "C.handlerCloseMovieDetail()",
+          "C.handlerLogOut()",
           profiles,
         );
         V.renderMovieCategory(movies);
       };
-      C.handleHomeClick = function () {
+      C.handlerLogOut = function () {
+        NavBar.resetProfileUI();
+        console.log("Profil déconnecté");
+      };
+      C.handlerHomeClick = function () {
         V.renderMovieCategory(movies);
       };
-      C.handleProfileSelect = function (profileName) {
+      C.handlerProfileSelect = function (profileName) {
         console.log("Profil sélectionné: " + profileName);
       };
       window.V = {};
 
-      V.renderNavBar = function (hAbout, hHome, profiles) {
+      V.renderNavBar = function (hAbout, hHome, handlerLogOut, profiles) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, hHome, profiles);
+        header.innerHTML = NavBar.format(
+          hAbout,
+          hHome,
+          profiles,
+          null,
+          handlerLogOut,
+        );
       };
       V.renderMovies = function (data) {
         let content = document.querySelector("#content");

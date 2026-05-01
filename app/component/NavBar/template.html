@@ -23,7 +23,7 @@
       <select
         name="id"
         class="profiles"
-        onchange="{{handlerSelect}}(this.value)"
+        onchange="{{handlerSelect}}(this.value); NavBar.showProfileAvatar(this.value)"
       >
         <option value="">--SELECTIONNER UN PROFIL--</option>
         {{profiles}}
