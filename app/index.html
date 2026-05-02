@@ -22,6 +22,7 @@
       let movies = await DataMovie.requestMovies();
       let profiles = await DataProfile.requestProfiles();
       let test = [];
+      let currentProfileId = null;
 
       window.C = {};
       C.handlerMovieDetail = async function (id) {
@@ -30,8 +31,12 @@
           V.renderMovieDetail(selectedMovie);
         }
       };
-      C.handlerCloseMovieDetail = function (id) {
-        V.renderMovies(movies, "C.handlerMovieDetail");
+      C.handlerCloseMovieDetail = function () {
+        if (currentProfileId) {
+          V.renderMovieCategory(movies, true);
+        } else {
+          V.renderMovieCategory([], false);
+        }
       };
       C.handlerAbout = function () {
         alert(
@@ -49,23 +54,25 @@
         V.renderMovieCategory([], false);
       };
       C.handlerLogOut = function () {
+        currentProfileId = null; // On reset l'ID
         NavBar.resetProfileUI();
-        movies = []; // Clear current movie list
-        V.renderMovieCategory([], false); // Show the "Please select profile" message
+        movies = [];
+        V.renderMovieCategory([], false);
       };
       C.handlerHomeClick = function () {
-        V.renderMovieCategory(movies);
+        if (currentProfileId) {
+          V.renderMovieCategory(movies, true);
+        } else {
+          V.renderMovieCategory([], false);
+        }
       };
-      // Find the profile object from your 'profiles' array using the name
       C.handlerProfileSelect = async function (profileName) {
         let selectedProfile = profiles.find((p) => p.nom === profileName);
 
         if (selectedProfile) {
-          let filteredMovies = await DataMovie.requestMovies(
-            selectedProfile.id,
-          );
+          currentProfileId = selectedProfile.id;
+          let filteredMovies = await DataMovie.requestMovies(currentProfileId);
           movies = filteredMovies;
-          // Profile is now selected, so we pass 'true'
           V.renderMovieCategory(movies, true);
         }
       };
