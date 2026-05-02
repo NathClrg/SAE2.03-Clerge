@@ -4,38 +4,34 @@ let HOST_URL = "..";
 let DataMovie = {};
 
 /**
- * Modified: Now accepts profileId to filter movies based on age.
+ * Récupère tous les films (filtrés par âge si profileId est fourni)
  */
 DataMovie.requestMovies = async function (profileId = null) {
-  // We start with the base URL
   let url = HOST_URL + "/server/script.php?todo=readmovies";
-
-  // If a profileId is provided, we append it to the query string
   if (profileId !== null) {
     url += "&profileId=" + profileId;
   }
-
   let answer = await fetch(url);
   let data = await answer.json();
   return data;
 };
 
 /**
- * Modified: Also accepts profileId for detail view
- * (In case you want to block the detail page for specific ages too)
+ * Récupère les détails d'un film
  */
 DataMovie.requestMovieDetails = async function (id, profileId = null) {
   let url = HOST_URL + "/server/script.php?todo=readmoviedetail&id=" + id;
-
   if (profileId !== null) {
     url += "&profileId=" + profileId;
   }
-
   let answer = await fetch(url);
   let data = await answer.json();
   return data;
 };
 
+/**
+ * Ajoute ou supprime un favori
+ */
 DataMovie.requestAddFavorite = async function (profileId, movieId) {
   let url =
     HOST_URL +
@@ -43,4 +39,17 @@ DataMovie.requestAddFavorite = async function (profileId, movieId) {
   let answer = await fetch(url);
   return await answer.json();
 };
+
+/**
+ * NOUVEAU : Récupère la liste des favoris
+ * Note : On utilise "readfavorites" pour correspondre au switch dans script.php
+ */
+DataMovie.requestFavorites = async function (profileId) {
+  let url =
+    HOST_URL + `/server/script.php?todo=readfavorites&profileId=${profileId}`;
+  let answer = await fetch(url);
+  let data = await answer.json();
+  return data;
+};
+
 export { DataMovie };

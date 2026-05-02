@@ -79,33 +79,25 @@
 
       C.handlerAddFavorite = async function (movieId) {
         if (!currentProfileId) {
-          alert("Veuillez sélectionner un profil.");
+          alert("Veuillez sélectionner un profil pour ajouter des favoris.");
           return;
         }
 
         if (event) event.stopPropagation();
 
-        // On appelle l'API
+        // On récupère la réponse brute du serveur (added ou removed)
         let result = await DataMovie.requestAddFavorite(
           currentProfileId,
           movieId,
         );
 
+        // On teste la valeur de la réponse
         if (result === "added") {
-          alert("Ajouté aux favoris !");
-          // Optionnel : Changer l'apparence du bouton ici
+          alert("Film ajouté aux favoris !");
         } else if (result === "removed") {
-          alert("Retiré des favoris !");
-
-          // Si on est actuellement sur la page des favoris, on rafraîchit l'affichage
-          // pour que le film disparaisse de la liste immédiatement
-          if (
-            /* condition pour savoir si on est dans l'onglet favoris */ true
-          ) {
-            C.handlerGetFavoritesByProfile();
-          }
+          alert("Film retiré des favoris !");
         } else {
-          alert("Une erreur est survenue.");
+          alert("Erreur lors de l'opération.");
         }
       };
 
