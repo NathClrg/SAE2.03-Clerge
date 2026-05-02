@@ -1,0 +1,5 @@
+.MovieCategory__liste {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

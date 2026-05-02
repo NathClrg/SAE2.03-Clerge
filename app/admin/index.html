@@ -18,12 +18,18 @@
 
       window.C = {};
 
-      C.handlerAddMovie = async function () {
-        let form = document.querySelector(".form__addmovie");
+      C.handlerAddMovie = async function (e) {
+        e.preventDefault();
+        let form = document.querySelector(".formulaire__movie");
         if (form.reportValidity()) {
           let fd = new FormData(form);
-          let res = await DataMovie.addmovies(fd);
-          V.renderLog(res);
+          let res = await fetch("../server/script.php", {
+            method: "POST",
+            body: fd,
+          });
+          let data = await res.json();
+          V.renderLog(data);
+          form.reset();
         }
       };
 

@@ -59,10 +59,36 @@
         movies = [];
         V.renderMovieCategory([], false);
       };
-      C.handlerHomeClick = function () {
+      C.handlerHomeClick = async function () {
+        let content = document.querySelector("#content");
+        content.innerHTML = ""; // On vide le contenu actuel
+
         if (currentProfileId) {
-          V.renderMovieCategory(movies, true);
+          // 1. On récupère les favoris
+          let favorites = await DataMovie.requestFavorites(currentProfileId);
+
+          // 2. Si on a des favoris, on crée une section spéciale en haut
+          // Dans ton C.handlerHomeClick
+          if (favorites && favorites.length > 0) {
+            let favSection = document.createElement("section");
+            // On ajoute une classe spécifique ici
+            favSection.innerHTML = `
+        <h2 class="category__title">Mes Favoris</h2>
+        <div class="favorites-row"> 
+            ${MovieCategory(favorites)}
+        </div>
+        <hr>
+    `;
+            content.appendChild(favSection);
+          }
+
+          // 3. On affiche le reste des films en dessous
+          let allMoviesSection = document.createElement("div");
+          allMoviesSection.innerHTML = `<h2 class="category__title">Tous les films</h2>`;
+          allMoviesSection.innerHTML += MovieCategory(movies);
+          content.appendChild(allMoviesSection);
         } else {
+          // Si pas de profil, message par défaut
           V.renderMovieCategory([], false);
         }
       };
@@ -71,33 +97,26 @@
 
         if (selectedProfile) {
           currentProfileId = selectedProfile.id;
-          let filteredMovies = await DataMovie.requestMovies(currentProfileId);
-          movies = filteredMovies;
-          V.renderMovieCategory(movies, true);
+          // On charge les films filtrés par âge
+          movies = await DataMovie.requestMovies(currentProfileId);
+
+          // On utilise la nouvelle fonction qui gère l'affichage combiné
+          C.handlerHomeClick();
         }
       };
 
       C.handlerAddFavorite = async function (movieId) {
-        if (!currentProfileId) {
-          alert("Veuillez sélectionner un profil pour ajouter des favoris.");
-          return;
-        }
-
+        if (!currentProfileId) return;
         if (event) event.stopPropagation();
 
-        // On récupère la réponse brute du serveur (added ou removed)
         let result = await DataMovie.requestAddFavorite(
           currentProfileId,
           movieId,
         );
 
-        // On teste la valeur de la réponse
-        if (result === "added") {
-          alert("Film ajouté aux favoris !");
-        } else if (result === "removed") {
-          alert("Film retiré des favoris !");
-        } else {
-          alert("Erreur lors de l'opération.");
+        if (result === "added" || result === "removed") {
+          // On rafraîchit simplement la vue pour déplacer/supprimer le film des favoris
+          C.handlerHomeClick();
         }
       };
 
