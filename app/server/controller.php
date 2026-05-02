@@ -78,29 +78,3 @@ function readMovieDetailController() {
 function readProfilesController() {
     return getAllProfiles();
 }
-
-function addFavoriteController() {
-    $id_p = $_REQUEST['profileId'];
-    $id_m = $_REQUEST['movieId'];
-
-    if (!is_numeric($id_m)) return false;
-
-    // On essaie d'ajouter
-    $ok = addFavorite($id_p, $id_m);
-
-    if ($ok === false) {
-        // Si l'ajout échoue (parce que le favori existe déjà), on le supprime
-        $removed = removeFavorite($id_p, $id_m);
-        return ($removed > 0) ? "removed" : false;
-    }
-
-    return "added";
-}
-
-function readFavoritesController() {
-    if (!isset($_REQUEST['profileId'])) {
-        return false;
-    }
-
-    return getFavoritesByProfile($_REQUEST['profileId']);
-}

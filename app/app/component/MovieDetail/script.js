@@ -14,8 +14,7 @@ MovieDetail.format = function (data) {
     .replaceAll("{{categorie}}", data.label)
     .replaceAll("{{description}}", data.description)
     .replaceAll("{{age}}", data.min_age)
-    .replaceAll("{{trailer}}", data.trailer)
-    .replace(/{{id}}/g, data.id);
+    .replaceAll("{{trailer}}", data.trailer);
 
   return html;
 };

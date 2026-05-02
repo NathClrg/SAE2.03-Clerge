@@ -22,7 +22,6 @@
       let movies = await DataMovie.requestMovies();
       let profiles = await DataProfile.requestProfiles();
       let test = [];
-      let currentProfileId = null;
 
       window.C = {};
       C.handlerMovieDetail = async function (id) {
@@ -31,12 +30,8 @@
           V.renderMovieDetail(selectedMovie);
         }
       };
-      C.handlerCloseMovieDetail = function () {
-        if (currentProfileId) {
-          V.renderMovieCategory(movies, true);
-        } else {
-          V.renderMovieCategory([], false);
-        }
+      C.handlerCloseMovieDetail = function (id) {
+        V.renderMovies(movies, "C.handlerMovieDetail");
       };
       C.handlerAbout = function () {
         alert(
@@ -54,77 +49,26 @@
         V.renderMovieCategory([], false);
       };
       C.handlerLogOut = function () {
-        currentProfileId = null;
         NavBar.resetProfileUI();
-        movies = [];
-        V.renderMovieCategory([], false);
+        movies = []; // Clear current movie list
+        V.renderMovieCategory([], false); // Show the "Please select profile" message
       };
       C.handlerHomeClick = function () {
-        if (currentProfileId) {
-          V.renderMovieCategory(movies, true);
-        } else {
-          V.renderMovieCategory([], false);
-        }
+        V.renderMovieCategory(movies);
       };
+      // Find the profile object from your 'profiles' array using the name
       C.handlerProfileSelect = async function (profileName) {
         let selectedProfile = profiles.find((p) => p.nom === profileName);
 
         if (selectedProfile) {
-          currentProfileId = selectedProfile.id;
-          let filteredMovies = await DataMovie.requestMovies(currentProfileId);
+          let filteredMovies = await DataMovie.requestMovies(
+            selectedProfile.id,
+          );
           movies = filteredMovies;
+          // Profile is now selected, so we pass 'true'
           V.renderMovieCategory(movies, true);
         }
       };
-
-      C.handlerAddFavorite = async function (movieId) {
-        if (!currentProfileId) {
-          alert("Veuillez sélectionner un profil.");
-          return;
-        }
-
-        if (event) event.stopPropagation();
-
-        // On appelle l'API
-        let result = await DataMovie.requestAddFavorite(
-          currentProfileId,
-          movieId,
-        );
-
-        if (result === "added") {
-          alert("Ajouté aux favoris !");
-          // Optionnel : Changer l'apparence du bouton ici
-        } else if (result === "removed") {
-          alert("Retiré des favoris !");
-
-          // Si on est actuellement sur la page des favoris, on rafraîchit l'affichage
-          // pour que le film disparaisse de la liste immédiatement
-          if (
-            /* condition pour savoir si on est dans l'onglet favoris */ true
-          ) {
-            C.handlerGetFavoritesByProfile();
-          }
-        } else {
-          alert("Une erreur est survenue.");
-        }
-      };
-
-      C.handlerGetFavoritesByProfile = async function () {
-        if (!currentProfileId) {
-          alert("Connectez-vous à un profil pour voir vos favoris.");
-          return;
-        }
-
-        let favorites = await DataMovie.requestFavorites(currentProfileId);
-
-        if (favorites && favorites.length > 0) {
-          V.renderMovieCategory(favorites, true);
-        } else {
-          alert("Vous n'avez pas encore de favoris.");
-          C.handlerHomeClick();
-        }
-      };
-
       window.V = {};
 
       V.renderNavBar = function (hAbout, hHome, handlerLogOut, profiles) {
@@ -147,14 +91,9 @@
       };
       V.renderMovieCategory = function (data, isProfileSelected = false) {
         let content = document.querySelector("#content");
-
         if (!isProfileSelected) {
-          // Si pas de profil, on utilise le format par défaut (message d'erreur)
           content.innerHTML = Movie.format([], false);
         } else {
-          // Si un profil est sélectionné, on utilise MovieCategory.
-          // Que ce soit pour la liste d'accueil ou pour les favoris,
-          // MovieCategory s'occupera de boucler sur les films et de remplacer les {{id}}.
           content.innerHTML = MovieCategory(data);
         }
       };

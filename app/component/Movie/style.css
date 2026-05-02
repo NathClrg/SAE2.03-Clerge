@@ -40,3 +40,63 @@
   font-size: 2rem;
   color: rgb(252, 0, 0);
 }
+
+.Movie__addFavorite {
+  background-color: #414866;
+  color: aliceblue;
+  border: 0.125rem solid #091fe5;
+  border-radius: 1.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.625rem auto;
+  max-width: 90%;
+}
+
+.Movie__addFavorite:hover {
+  background-color: #918d8d9c;
+  color: #ffffff;
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.3);
+}
+
+.Movie__addFavorite:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.Movie__addFavorite::before {
+  content: "❤";
+  font-size: 1rem;
+  color: #2a09e5;
+  transition: color 0.2s;
+}
+
+.Movie__addFavorite:hover::before {
+  color: #ffffff;
+}
+
+.Movie__Card {
+  background: #2a2f45;
+  border-radius: 0.5rem;
+  padding-bottom: 1rem;
+  transition: transform 0.3s;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+}
+
+.Movie__Card:hover {
+  transform: scale(1.03);
+  background: #323852;
+}
+
+.Movie__Title {
+  color: aliceblue;
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 0.75rem 0;
+}

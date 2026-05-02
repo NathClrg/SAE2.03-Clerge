@@ -14,9 +14,9 @@
  * DBPWD : Mot de passe pour se connecter à la base de données.
  */
 define("HOST", "localhost");
-define("DBNAME", "clerge1");
-define("DBLOGIN", "clerge1");
-define("DBPWD", "clerge1");
+define("DBNAME", "SAE203");
+define("DBLOGIN", "root");
+define("DBPWD", "Aazzeerr33.+");
 
 
 function getAllMovies(){
@@ -115,44 +115,4 @@ function getMovieDetail($id){
     $stmt->execute();
     $res = $stmt->fetch(PDO::FETCH_OBJ);
     return $res;
-}
-
-function addFavorite($id_profile, $id_movie) {
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    
-    $sql = "INSERT INTO Favorite (id_profile, id_movie) VALUES (:id_p, :id_m)";
-    $stmt = $cnx->prepare($sql);
-    $stmt->bindParam(':id_p', $id_profile);
-    $stmt->bindParam(':id_m', $id_movie);
-    
-    try {
-        $stmt->execute();
-        return $stmt->rowCount();
-    } catch (PDOException $e) {
-        return false;
-    }
-}
-
-function getFavoritesByProfile($id_profile) {
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT Movie.*, Category.name as label 
-            FROM Movie 
-            INNER JOIN Favorite ON Movie.id = Favorite.id_movie 
-            INNER JOIN Category ON Category.id = Movie.id_category 
-            WHERE Favorite.id_profile = :id_p";
-    
-    $stmt = $cnx->prepare($sql);
-    $stmt->bindParam(':id_p', $id_profile);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_OBJ);
-}
-
-function removeFavorite($id_profile, $id_movie) {
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "DELETE FROM Favorite WHERE id_profile = :id_p AND id_movie = :id_m";
-    $stmt = $cnx->prepare($sql);
-    $stmt->bindParam(':id_p', $id_profile);
-    $stmt->bindParam(':id_m', $id_movie);
-    $stmt->execute();
-    return $stmt->rowCount(); // Retourne le nombre de lignes supprimées
 }
