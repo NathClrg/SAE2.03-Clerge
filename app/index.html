@@ -54,7 +54,7 @@
         V.renderMovieCategory([], false);
       };
       C.handlerLogOut = function () {
-        currentProfileId = null; // On reset l'ID
+        currentProfileId = null;
         NavBar.resetProfileUI();
         movies = [];
         V.renderMovieCategory([], false);
@@ -76,6 +76,45 @@
           V.renderMovieCategory(movies, true);
         }
       };
+
+      C.handlerAddFavorite = async function (movieId) {
+        if (!currentProfileId) {
+          alert("Veuillez sélectionner un profil pour ajouter des favoris.");
+          return;
+        }
+
+        if (event) event.stopPropagation();
+
+        let success = await DataMovie.requestAddFavorite(
+          currentProfileId,
+          movieId,
+        );
+
+        if (success) {
+          alert("Film ajouté aux favoris !");
+        } else {
+          alert(
+            "Erreur : Le film est déjà en favoris ou le serveur est indisponible.",
+          );
+        }
+      };
+
+      C.handlerGetFavoritesByProfile = async function () {
+        if (!currentProfileId) {
+          alert("Connectez-vous à un profil pour voir vos favoris.");
+          return;
+        }
+
+        let favorites = await DataMovie.requestFavorites(currentProfileId);
+
+        if (favorites && favorites.length > 0) {
+          V.renderMovieCategory(favorites, true);
+        } else {
+          alert("Vous n'avez pas encore de favoris.");
+          C.handlerHomeClick();
+        }
+      };
+
       window.V = {};
 
       V.renderNavBar = function (hAbout, hHome, handlerLogOut, profiles) {
@@ -98,9 +137,14 @@
       };
       V.renderMovieCategory = function (data, isProfileSelected = false) {
         let content = document.querySelector("#content");
+
         if (!isProfileSelected) {
+          // Si pas de profil, on utilise le format par défaut (message d'erreur)
           content.innerHTML = Movie.format([], false);
         } else {
+          // Si un profil est sélectionné, on utilise MovieCategory.
+          // Que ce soit pour la liste d'accueil ou pour les favoris,
+          // MovieCategory s'occupera de boucler sur les films et de remplacer les {{id}}.
           content.innerHTML = MovieCategory(data);
         }
       };

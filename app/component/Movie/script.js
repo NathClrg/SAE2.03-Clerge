@@ -10,18 +10,20 @@ Movie.format = function (data, tab) {
   if (data.length == 0) {
     html = html.replace(
       "{{movie}}",
-      "<p class='Profile__Warning'>Veuillez selectionner un profile </p>",
+      "<p class='Profile__Warning'>Veuillez sélectionner un profil</p>",
     );
   } else {
     let htmlMovie = "";
     for (let movie of data) {
       let card = templateMovie;
-      card = card
-        .replaceAll("{{name}}", movie.name)
-        .replaceAll("{{image}}", "/server/images/" + movie.image)
-        .replaceAll("{{id}}", movie.id);
+
+      card = card.replace(/{{name}}/g, movie.name);
+      card = card.replaceAll(/{{image}}/g, "../server/images/" + movie.image);
+      card = card.replace(/{{id}}/g, movie.id);
+
       htmlMovie += card;
     }
+
     html = html.replace("{{movie}}", htmlMovie);
   }
   return html;

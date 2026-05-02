@@ -78,3 +78,28 @@ function readMovieDetailController() {
 function readProfilesController() {
     return getAllProfiles();
 }
+
+function addFavoriteController() {
+    if (!isset($_REQUEST['profileId']) || !isset($_REQUEST['movieId'])) {
+        return false;
+    }
+
+    $id_profile = $_REQUEST['profileId'];
+    $id_movie = $_REQUEST['movieId'];
+
+    // Vérification : si movieId n'est pas numérique, on stoppe tout de suite
+    if (!is_numeric($id_movie)) {
+        return false; // Cela renverra l'erreur JSON configurée dans script.php
+    }
+
+    $ok = addFavorite($id_profile, $id_movie);
+    return ($ok !== false) ? "Movie added to favorites" : false;
+}
+
+function readFavoritesController() {
+    if (!isset($_REQUEST['profileId'])) {
+        return false;
+    }
+
+    return getFavoritesByProfile($_REQUEST['profileId']);
+}

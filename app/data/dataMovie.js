@@ -36,4 +36,11 @@ DataMovie.requestMovieDetails = async function (id, profileId = null) {
   return data;
 };
 
+DataMovie.requestAddFavorite = async function (profileId, movieId) {
+  let url =
+    HOST_URL +
+    `/server/script.php?todo=addfavorite&profileId=${profileId}&movieId=${movieId}`;
+  let answer = await fetch(url);
+  return await answer.json();
+};
 export { DataMovie };

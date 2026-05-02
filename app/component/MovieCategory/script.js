@@ -17,17 +17,17 @@ export function MovieCategory(movies) {
     }
 
     categories[cat] += movieTemplate
-      .replace("{{id}}", movie.id)
-      .replace("{{image}}", "../server/images/" + movie.image)
-      .replaceAll("{{name}}", movie.name);
+      .replace(/{{id}}/g, movie.id)
+      .replace(/{{image}}/g, "../server/images/" + movie.image)
+      .replace(/{{name}}/g, movie.name);
   }
 
   let html = "";
 
   for (let cat in categories) {
     html += categoryTemplate
-      .replace("{{category}}", cat)
-      .replace("{{movie}}", categories[cat]);
+      .replace(/{{category}}/g, cat)
+      .replace(/{{movie}}/g, categories[cat]);
   }
 
   return html;
