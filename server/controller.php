@@ -4,7 +4,19 @@ require("model.php");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 function readMoviesController() {
-    return getAllMovies();
+    // If no profileId is provided, return an empty array immediately
+    if (!isset($_REQUEST['profileId']) || $_REQUEST['profileId'] === 'null') {
+        return [];
+    }
+
+    $movies = getAllMovies();
+    $userAge = getProfileAge($_REQUEST['profileId']);
+    
+    $filteredMovies = array_filter($movies, function($movie) use ($userAge) {
+        return $movie->min_age <= $userAge;
+    });
+
+    return array_values($filteredMovies);
 }
 
 function readMoviesByCategoryController() {
@@ -53,6 +65,7 @@ function addProfileController() {
         return "Erreur lors de la création du profil";
     }
 }
+
 
 function readMovieDetailController() {
     if (!isset($_REQUEST['id'])) {

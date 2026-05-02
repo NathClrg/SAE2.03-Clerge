@@ -10,7 +10,7 @@ Movie.format = function (data, tab) {
   if (data.length == 0) {
     html = html.replace(
       "{{movie}}",
-      "<p class='Movie_title'>J'ai le seum pour toi mais vas sur Anime-Sama! ;) </p>",
+      "<p class='Profile__Warning'>Veuillez selectionner un profile </p>",
     );
   } else {
     let htmlMovie = "";

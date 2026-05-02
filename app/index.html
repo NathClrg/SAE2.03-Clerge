@@ -46,17 +46,28 @@
           "C.handlerLogOut()",
           profiles,
         );
-        V.renderMovieCategory(movies);
+        V.renderMovieCategory([], false);
       };
       C.handlerLogOut = function () {
         NavBar.resetProfileUI();
-        console.log("Profil déconnecté");
+        movies = []; // Clear current movie list
+        V.renderMovieCategory([], false); // Show the "Please select profile" message
       };
       C.handlerHomeClick = function () {
         V.renderMovieCategory(movies);
       };
-      C.handlerProfileSelect = function (profileName) {
-        console.log("Profil sélectionné: " + profileName);
+      // Find the profile object from your 'profiles' array using the name
+      C.handlerProfileSelect = async function (profileName) {
+        let selectedProfile = profiles.find((p) => p.nom === profileName);
+
+        if (selectedProfile) {
+          let filteredMovies = await DataMovie.requestMovies(
+            selectedProfile.id,
+          );
+          movies = filteredMovies;
+          // Profile is now selected, so we pass 'true'
+          V.renderMovieCategory(movies, true);
+        }
       };
       window.V = {};
 
@@ -78,9 +89,13 @@
         let content = document.querySelector("#content");
         content.innerHTML = MovieDetail.format(data);
       };
-      V.renderMovieCategory = function (data) {
+      V.renderMovieCategory = function (data, isProfileSelected = false) {
         let content = document.querySelector("#content");
-        content.innerHTML = MovieCategory(data);
+        if (!isProfileSelected) {
+          content.innerHTML = Movie.format([], false);
+        } else {
+          content.innerHTML = MovieCategory(data);
+        }
       };
       C.start();
     </script>

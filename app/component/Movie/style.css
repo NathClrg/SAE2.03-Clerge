@@ -35,3 +35,8 @@
   font-size: 1rem;
   color: white;
 }
+
+.Profile__Warning {
+  font-size: 2rem;
+  color: rgb(252, 0, 0);
+}
