@@ -16,9 +16,6 @@ DataMovie.requestMovies = async function (profileId = null) {
   return data;
 };
 
-/**
- * Récupère les détails d'un film
- */
 DataMovie.requestMovieDetails = async function (id, profileId = null) {
   let url = HOST_URL + "/server/script.php?todo=readmoviedetail&id=" + id;
   if (profileId !== null) {
