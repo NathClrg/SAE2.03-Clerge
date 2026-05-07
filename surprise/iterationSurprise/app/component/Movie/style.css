@@ -1,0 +1,159 @@
+.Movie__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 3rem;
+  padding: 0 4%;
+  margin: 3rem 0;
+  list-style: none;
+}
+
+.Movie__Card {
+  position: relative;
+  width: 16.25rem;
+  background: transparent;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: pointer;
+}
+
+.Movie__Card:hover {
+  transform: translateY(-0.625rem) scale(1.03);
+  z-index: 10;
+}
+
+.Movie__Image {
+  width: 100%;
+  height: 24.375rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  display: block;
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.4);
+}
+
+.Movie__Title {
+  display: none;
+  font-family: "Roboto", sans-serif;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: left;
+  margin: 1rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.0125rem;
+}
+
+.Movie__addFavorite {
+  position: absolute;
+  top: 0.9375rem;
+  right: 0.9375rem;
+  width: 2.625rem;
+  height: 2.625rem;
+  background-color: rgba(15, 15, 15, 0.85);
+  color: #ffffff;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  font-size: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.2s;
+  backdrop-filter: blur(0.625rem);
+  z-index: 5;
+}
+
+.Movie__Card:hover .Movie__addFavorite {
+  opacity: 1;
+}
+
+.Movie__addFavorite::before {
+  content: "❤";
+  font-size: 1.25rem;
+  color: #ffffff;
+}
+
+.Movie__addFavorite:hover {
+  background-color: #e50914;
+  border-color: #e50914;
+  transform: scale(1.1);
+}
+
+.Movie__addFavorite:active {
+  transform: scale(0.9);
+}
+
+.Profile__Warning {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff3333;
+  text-align: center;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+@media (max-width: 1024px) {
+  .Movie__list {
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .Movie__Card {
+    width: 14rem;
+  }
+
+  .Movie__Image {
+    height: 21rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .Movie__list {
+    gap: 1rem;
+    padding: 0 2%;
+  }
+
+  .Movie__Card {
+    width: calc(50% - 1rem);
+    max-width: 18rem;
+  }
+
+  .Movie__Image {
+    height: auto;
+    aspect-ratio: 2/3;
+  }
+
+  .Movie__addFavorite {
+    opacity: 1;
+    width: 2.2rem;
+    height: 2.2rem;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .Movie__addFavorite::before {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .Movie__list {
+    gap: 0.75rem;
+  }
+
+  .Movie__Card {
+    width: calc(50% - 0.5rem);
+  }
+
+  .Profile__Warning {
+    font-size: 1.2rem;
+  }
+}

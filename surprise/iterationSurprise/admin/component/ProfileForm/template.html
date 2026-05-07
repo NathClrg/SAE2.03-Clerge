@@ -1,0 +1,44 @@
+<div class="Profile">
+  <form
+    method="POST"
+    onsubmit="C.handlerAddProfile(event)"
+    class="formulaire__profile"
+  >
+    <label class="formulaire__label" for="formulaire__field">Name</label>
+    <input
+      class="formulaire__field"
+      type="text"
+      name="nom"
+      placeholder="nom du profile*"
+      required
+    />
+    <label class="formulaire__label" for="formulaire__field">Age</label>
+    <input
+      class="formulaire__field"
+      type="int"
+      name="age"
+      placeholder="Age*"
+      required
+    />
+    <label class="formulaire__label" for="formulaire__field">Url Avatar</label>
+    <input
+      class="formulaire__field"
+      type="text"
+      name="avatar"
+      placeholder="url avatar*"
+      required
+    />
+    <label class="formulaire__label" for="formulaire__field"
+      >Nouveau Nom (optionnel)</label
+    >
+    <input
+      class="formulaire__field"
+      type="text"
+      name="newnom"
+      placeholder="nouveau nom du profil (facultatif)"
+    />
+
+    <input class="addmovie__btn" type="hidden" value="addProfile" name="todo" />
+    <input type="submit" value="Ajouter" />
+  </form>
+</div>

@@ -1,0 +1,50 @@
+<div class="detail">
+  <div class="detail__background-container">
+    <iframe
+      class="detail__bg-video"
+      src="{{trailer}}?autoplay=1&mute=1&controls=0&loop=1&background=1&enablejsapi=1"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+    ></iframe>
+    <div class="detail__overlay"></div>
+  </div>
+
+  <div class="detail__content-wrapper">
+    <div class="detail__left-column">
+      <img class="detail__img" src="{{cover}}" alt="{{title}}" />
+    </div>
+
+    <div class="detail__main-info">
+      <h1 class="detail__title">{{title}}</h1>
+
+      <div class="detail__metadata">
+        <span class="detail__year">{{year}}</span>
+        <span class="detail__age-rating">{{age}}</span>
+        <span class="detail__genre">{{categorie}}</span>
+      </div>
+
+      <div class="detail__actions-row">
+        <button
+          class="MovieDetail__addFavorite"
+          onclick="C.handlerAddFavorite('{{id}}')"
+        >
+          Favoris
+        </button>
+        <button class="detail__back-button" onclick="C.handlerHomeClick()">
+          Return
+        </button>
+      </div>
+
+      <div class="detail__description-block">
+        <p>{{description}}</p>
+      </div>
+
+      <div class="detail__crew">
+        <div class="detail__info-item">
+          <h2>Réalisateur</h2>
+          <p>{{realisateur}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

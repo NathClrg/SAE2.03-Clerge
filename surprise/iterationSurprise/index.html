@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>SAE2.03 APP</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header id="header"></header>
+
+    <section id="content"></section>
+
+    <script type="module">
+      import { DataMovie } from "./data/dataMovie.js";
+      import { DataProfile } from "./data/dataProfile.js";
+      import { NavBar } from "./component/NavBar/script.js";
+      import { Movie } from "./component/Movie/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
+      let movies = await DataMovie.requestMovies();
+      let profiles = await DataProfile.requestProfiles();
+      let test = [];
+      let currentProfileId = null;
+
+      window.C = {};
+      C.handlerMovieDetail = async function (id) {
+        let selectedMovie = await DataMovie.requestMovieDetails(id);
+        if (selectedMovie) {
+          V.renderMovieDetail(selectedMovie);
+        }
+      };
+      C.handlerCloseMovieDetail = function () {
+        if (currentProfileId) {
+          V.renderMovieCategory(movies, true);
+        } else {
+          V.renderMovieCategory([], false);
+        }
+      };
+      C.handlerAbout = function () {
+        alert(
+          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
+        );
+      };
+
+      C.start = function () {
+        V.renderNavBar(
+          "C.handlerAbout()",
+          "C.handlerCloseMovieDetail()",
+          "C.handlerLogOut()",
+          profiles,
+        );
+        V.renderMovieCategory([], false);
+      };
+      C.handlerLogOut = function () {
+        currentProfileId = null;
+        NavBar.resetProfileUI();
+        movies = [];
+        V.renderMovieCategory([], false);
+      };
+      C.handlerHomeClick = async function () {
+        let content = document.querySelector("#content");
+        content.innerHTML = ""; // On vide le contenu actuel
+
+        if (currentProfileId) {
+          // 1. On récupère les favoris
+          let favorites = await DataMovie.requestFavorites(currentProfileId);
+
+          // 2. Si on a des favoris, on crée une section spéciale en haut
+          // Dans ton C.handlerHomeClick
+          if (favorites && favorites.length > 0) {
+            let favSection = document.createElement("section");
+            // On ajoute une classe spécifique ici
+            favSection.innerHTML = `
+        <h2 class="category__title">Mes Favoris</h2>
+        <div class="favorites-row"> 
+            ${MovieCategory(favorites)}
+        </div>
+        <hr>
+    `;
+            content.appendChild(favSection);
+          }
+
+          // 3. On affiche le reste des films en dessous
+          let allMoviesSection = document.createElement("div");
+          allMoviesSection.innerHTML = `<h2 class="category__title">Tous les films</h2>`;
+          allMoviesSection.innerHTML += MovieCategory(movies);
+          content.appendChild(allMoviesSection);
+        } else {
+          // Si pas de profil, message par défaut
+          V.renderMovieCategory([], false);
+        }
+      };
+      C.handlerProfileSelect = async function (profileName) {
+        let selectedProfile = profiles.find((p) => p.nom === profileName);
+
+        if (selectedProfile) {
+          currentProfileId = selectedProfile.id;
+          // On charge les films filtrés par âge
+          movies = await DataMovie.requestMovies(currentProfileId);
+
+          // On utilise la nouvelle fonction qui gère l'affichage combiné
+          C.handlerHomeClick();
+        }
+      };
+
+      C.handlerAddFavorite = async function (movieId) {
+        if (!currentProfileId) return;
+        if (event) event.stopPropagation();
+
+        let result = await DataMovie.requestAddFavorite(
+          currentProfileId,
+          movieId,
+        );
+
+        if (result === "added" || result === "removed") {
+          // On rafraîchit simplement la vue pour déplacer/supprimer le film des favoris
+          C.handlerHomeClick();
+        }
+      };
+
+      C.handlerGetFavoritesByProfile = async function () {
+        if (!currentProfileId) {
+          alert("Connectez-vous à un profil pour voir vos favoris.");
+          return;
+        }
+
+        let favorites = await DataMovie.requestFavorites(currentProfileId);
+
+        if (favorites && favorites.length > 0) {
+          V.renderMovieCategory(favorites, true);
+        } else {
+          alert("Vous n'avez pas encore de favoris.");
+          C.handlerHomeClick();
+        }
+      };
+
+      window.V = {};
+
+      V.renderNavBar = function (hAbout, hHome, handlerLogOut, profiles) {
+        let header = document.querySelector("#header");
+        header.innerHTML = NavBar.format(
+          hAbout,
+          hHome,
+          profiles,
+          null,
+          handlerLogOut,
+        );
+      };
+      V.renderMovies = function (data) {
+        let content = document.querySelector("#content");
+        content.innerHTML = Movie.format(data);
+      };
+      V.renderMovieDetail = function (data) {
+        let content = document.querySelector("#content");
+        content.innerHTML = MovieDetail.format(data);
+      };
+      V.renderMovieCategory = function (data, isProfileSelected = false) {
+        let content = document.querySelector("#content");
+
+        if (!isProfileSelected) {
+          // Si pas de profil, on utilise le format par défaut (message d'erreur)
+          content.innerHTML = Movie.format([], false);
+        } else {
+          // Si un profil est sélectionné, on utilise MovieCategory.
+          // Que ce soit pour la liste d'accueil ou pour les favoris,
+          // MovieCategory s'occupera de boucler sur les films et de remplacer les {{id}}.
+          content.innerHTML = MovieCategory(data);
+        }
+      };
+      C.start();
+    </script>
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__links">
+          <div class="footer__column">
+            <h3 class="footer__title">Explore</h3>
+            <a href="#" class="footer__link">Home</a>
+            <a href="#" class="footer__link">Movies</a>
+            <a href="#" class="footer__link">TV Shows</a>
+            <a href="#" class="footer__link">Latest</a>
+          </div>
+          <div class="footer__column">
+            <h3 class="footer__title">Support</h3>
+            <a href="#" class="footer__link">Help Center</a>
+            <a href="#" class="footer__link">Terms of Use</a>
+            <a href="#" class="footer__link">Privacy</a>
+            <a href="#" class="footer__link">Cookie Preferences</a>
+          </div>
+          <div class="footer__column">
+            <h3 class="footer__title">Social</h3>
+            <div class="footer__socials">
+              <a href="#" class="footer__link">Facebook</a>
+              <a href="#" class="footer__link">Instagram</a>
+              <a href="#" class="footer__link">Twitter</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <p class="footer__copyright">
+            &copy; 2026 YourApp. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
