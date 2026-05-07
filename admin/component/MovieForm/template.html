@@ -1,5 +1,10 @@
 <div class="formulaire">
-  <form methode="POST" action="../server/script.php" class="formulaire__movie">
+  <form
+    method="POST"
+    onsubmit="C.handlerAddMovie(event)"
+    action="../server/script.php"
+    class="formulaire__movie"
+  >
     <label for="formulaire__champ">Titre Film</label>
     <input
       class="formulaire__champ"
@@ -78,7 +83,7 @@
       <option value="5">16</option>
       <option value="6">18</option>
     </select>
-    <input class="addmovie__btn" type="hidden" value="addmovies" name="todo" />
+    <input class="addmovie__btn" type="hidden" value="addMovies" name="todo" />
     <input type="submit" value="Ajouter" />
   </form>
 </div>

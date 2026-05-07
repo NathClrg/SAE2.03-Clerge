@@ -40,6 +40,7 @@
   background-color: #fff;
 }
 
+.formulaire__movie input[type="submit"],
 .formulaire__movie button {
   margin-top: 1.3rem;
   padding: 0.8rem;
@@ -50,6 +51,7 @@
   cursor: pointer;
 }
 
+.formulaire__movie input[type="submit"]:hover,
 .formulaire__movie button:hover {
   background-color: #0056b3;
 }
